@@ -92,7 +92,9 @@ function App() {
   const [selected, setSelected] = useState(null);
   const [category, setCategory] = useState("全部");
   const [search, setSearch] = useState("");
-  const [mode, setMode] = useState("home");
+  const [mode, setMode] = useState(
+  window.location.pathname === "/admin" ? "login" : "home"
+);
   const [session, setSession] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [email, setEmail] = useState("");
@@ -127,6 +129,11 @@ function App() {
     });
     return () => listener.subscription.unsubscribe();
   }, []);
+  useEffect(() => {
+  if (isAdmin && mode === "login") {
+    setMode("manage");
+  }
+}, [isAdmin, mode]);
 
   const categories = useMemo(() => ["全部", ...new Set(posts.map(p => p.category).filter(Boolean))], [posts]);
   const filtered = posts.filter(p => (category === "全部" || p.category === category) &&
@@ -183,41 +190,58 @@ function App() {
   <button onClick={() => setMode("submissions")}>废物投稿</button>
   <button onClick={() => setMode("events")}>事件记录</button>
   <button onClick={() => setMode("about")}>关于</button>
+  {isAdmin && (
+  <button className="login-link" onClick={logout}>
+    <LogOut size={15} /> 退出登录
+  </button>
+)}
         {isAdmin && <button onClick={() => setMode("manage")}>文章管理</button>}
-        {!session ? <button className="login-link" onClick={() => setMode("login")}><Lock size={15}/> admin</button> : <button className="login-link" onClick={logout}><LogOut size={15}/> 退出</button>}
+      
       </nav>
     </header>
 
     {notice && <div className="notice" role="status">{notice}<button onClick={() => setNotice("")}><X size={15}/></button></div>}
 
     {mode === "home" && !selected && <>
-      <section className="hero"><section className="category-section">
-  <div className="section-heading">
-    <div>
-      <p className="eyebrow">EXPLORE THE ARCHIVE</p>
-      <h2>文章板块</h2>
-    </div>
-  </div>
-
-  <div className="category-grid">
-    {sections.map(section => (
-      <button
-        className="category-card"
-        key={section.mode}
-        onClick={() => {
-          setMode(section.mode);
-          setSelected(null);
-          setSearch("");
-        }}
-      >
-        <span className="category-number">{section.number}</span>
-        <h3>{section.name}</h3>
-        <p>{section.description}</p>
-        <span className="category-link">进入板块 ↗</span>
-      </button>
-    ))}
-  </div>
-</section><p className="eyebrow">成员变更|废物投稿|事件记录</p><h1>燎原维基百科<br/><em>2026新起点</em></h1><p className="hero-copy">认准正统燎原，反对所有假燎原/借刀废物，如果遇到假燎原，请立即找到官方举报</p><a href="#articles" className="text-link">阅读最新文章 <ArrowUpRight size={16}/></a></section>
+      <section className="hero">
+        <div className="hero-layout">
+          <div className="hero-text">
+            <p className="eyebrow">成员变更 | 废物投稿 | 事件记录</p>
+            <h1>燎原维基百科<br/><em>2026新起点</em></h1>
+            <p className="hero-copy">认准正统燎原，反对所有假燎原/借刀废物，如果遇到假燎原，请立即找到官方举报</p>
+            <a href="#articles" className="text-link">阅读最新文章 <ArrowUpRight size={16}/></a>
+          </div>
+          <div className="hero-visual">
+            <img className="hero-logo" src="/logo.png" alt="燎原维基百科徽章" />
+          </div>
+        </div>
+      </section>
+      <section className="category-section">
+        <div className="section-heading">
+          <div>
+            <p className="eyebrow">技术支持：Lunar</p>
+            <h2>文章板块</h2>
+          </div>
+        </div>
+        <div className="category-grid">
+          {sections.map(section => (
+            <button
+              className="category-card"
+              key={section.mode}
+              onClick={() => {
+                setMode(section.mode);
+                setSelected(null);
+                setSearch("");
+              }}
+            >
+              <span className="category-number">{section.number}</span>
+              <h3>{section.name}</h3>
+              <p>{section.description}</p>
+              <span className="category-link">进入板块 ↗</span>
+            </button>
+          ))}
+        </div>
+      </section>
       <section className="article-section" id="articles"><div className="section-heading"><div><p className="eyebrow">THE JOURNAL</p><h2>近期文章</h2></div><div className="searchbox"><Search size={16}/><input value={search} onChange={e => setSearch(e.target.value)} placeholder="搜索文章"/></div></div>
       <div className="filters">{categories.map(c => <button key={c} className={category === c ? "active" : ""} onClick={() => setCategory(c)}>{c}</button>)}</div>
       {filtered.length ? <div className="post-grid">{filtered.map(post => <article className="post-card" key={post.id} onClick={() => setSelected(post)}>
