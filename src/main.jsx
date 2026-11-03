@@ -306,7 +306,14 @@ function App() {
   </main>
 )}
     {selected && <main className="reader"><button className="back" onClick={() => setSelected(null)}><ChevronLeft size={17}/> 返回文章列表</button>{selected.cover_url && <img className="reader-cover" src={selected.cover_url} alt=""/>}<p className="eyebrow">{selected.category} · {new Date(selected.created_at).toLocaleDateString("zh-CN")}</p><h1>{selected.title}</h1><p className="reader-excerpt">{selected.excerpt}</p><div className="article-content">{selected.content}</div></main>}
-    {mode === "about" && <main className="reader about"><p className="eyebrow">ABOUT LiaoYuan</p><h1>这里是燎原维基百科站点</h1><p className="reader-excerpt">创始人：逸林 风绝</p><div className="article-content">本站点文章分为三个板块：成员变更，欢迎投稿</div></main>}
+    {mode === "about" && <main className="reader about"><div className="fire-background" aria-hidden="true">
+  <span className="flame flame-one"></span>
+  <span className="flame flame-two"></span>
+  <span className="flame flame-three"></span>
+  <span className="flame flame-four"></span>
+  <span className="flame flame-five"></span>
+  <span className="flame flame-six"></span>
+</div><p className="eyebrow">ABOUT LiaoYuan</p><h1>这里是燎原维基百科站点</h1><p className="reader-excerpt">创始人：逸林 风绝</p><div className="article-content">本站点建设技术支持：Lunar</div></main>}
     {mode === "login" && <main className="auth-card"><p className="eyebrow">PRIVATE AREA</p><h2>管理员登录</h2><p>登录后可以创建、编辑和删除文章。</p><form onSubmit={login}><label>邮箱<input type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label><label>password<input type="password" required value={password} onChange={e => setPassword(e.target.value)}/></label><button className="primary" disabled={loading}>{loading ? "登录中…" : "登录后台"}</button></form></main>}
     {mode === "manage" && isAdmin && <main className="manager"><div className="section-heading"><div><p className="eyebrow">DASHBOARD</p><h2>文章管理</h2></div><button className="primary small" onClick={() => { setEditingId(null); setDraft({ title: "", excerpt: "", content: "", category: "成员变更", cover_url: "" }); setMode("editor"); }}><Plus size={16}/> 编辑新文章</button></div>{posts.map(p => <div className="manage-row" key={p.id}><div><b>{p.title}</b><small>{p.category} · {new Date(p.created_at).toLocaleDateString("zh-CN")}</small></div><div><button onClick={() => editPost(p)}>编辑</button><button className="danger" onClick={() => deletePost(p.id)}>删除</button></div></div>)}</main>}
     {mode === "editor" && isAdmin && <main className="editor"><button className="back" onClick={() => setMode("manage")}><ChevronLeft size={17}/> 返回管理</button><p className="eyebrow">EDITOR</p><h2>{editingId ? "编辑文章" : "发布一篇新文章"}</h2><form onSubmit={savePost}><label>文章标题<input required value={draft.title} onChange={e => setDraft({...draft, title:e.target.value})}/></label><label>摘要<input value={draft.excerpt} onChange={e => setDraft({...draft, excerpt:e.target.value})}/></label><label>

@@ -212,3 +212,154 @@
 .hero h1 em {
   color: #8B2635;
 }
+/* 页面切换动画 */
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 页面进入时淡入 */
+main,
+.hero,
+.article-section {
+  animation: page-enter 0.45s ease both;
+}
+/* 按钮交互动画 */
+button {
+  transition:
+    transform 0.25s ease,
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease,
+    opacity 0.25s ease;
+}
+
+/* 鼠标悬停 */
+button:hover {
+  transform: translateY(-2px);
+}
+
+/* 点击反馈 */
+button:active {
+  transform: scale(0.97);
+}
+/* 关于页面黑色火焰背景 */
+.about {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 75vh;
+}
+
+/* 火焰背景容器 */
+.fire-background {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+/* 火焰形状 */
+.flame {
+  position: absolute;
+  bottom: -80px;
+  display: block;
+  width: 100px;
+  height: 260px;
+  background: linear-gradient(
+    to top,
+    #000 0%,
+    #080808 35%,
+    #242424 70%,
+    transparent 100%
+  );
+  clip-path: polygon(
+    50% 0%,
+    65% 25%,
+    58% 42%,
+    85% 25%,
+    78% 55%,
+    100% 42%,
+    88% 78%,
+    70% 100%,
+    25% 100%,
+    10% 75%,
+    0% 55%,
+    25% 65%,
+    20% 35%,
+    42% 50%
+  );
+  transform-origin: bottom center;
+  animation: black-fire 2.5s ease-in-out infinite alternate;
+}
+
+.flame-one {
+  left: 3%;
+  height: 240px;
+  animation-delay: 0s;
+}
+
+.flame-two {
+  left: 20%;
+  height: 320px;
+  width: 130px;
+  animation-delay: .6s;
+}
+
+.flame-three {
+  left: 40%;
+  height: 220px;
+  animation-delay: 1s;
+}
+
+.flame-four {
+  left: 58%;
+  height: 300px;
+  width: 120px;
+  animation-delay: .3s;
+}
+
+.flame-five {
+  left: 77%;
+  height: 250px;
+  animation-delay: .9s;
+}
+
+.flame-six {
+  right: 1%;
+  height: 330px;
+  width: 140px;
+  animation-delay: 1.3s;
+}
+
+/* 火焰燃烧动画 */
+@keyframes black-fire {
+  0% {
+    transform: scaleY(.75) scaleX(.9) rotate(-5deg);
+    opacity: .55;
+  }
+
+  50% {
+    opacity: .9;
+  }
+
+  100% {
+    transform: scaleY(1.2) scaleX(1.08) rotate(5deg);
+    opacity: .7;
+  }
+}
+
+/* 尊重系统的减少动态效果设置 */
+@media (prefers-reduced-motion: reduce) {
+  .flame {
+    animation: none;
+  }
+}
