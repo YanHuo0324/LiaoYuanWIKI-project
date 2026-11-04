@@ -249,7 +249,7 @@ button:hover {
 button:active {
   transform: scale(0.97);
 }
-/* 关于页面黑色火焰背景 */
+/* 关于页面单束黑色火焰背景 */
 .about {
   position: relative;
   isolation: isolate;
@@ -257,7 +257,6 @@ button:active {
   min-height: 75vh;
 }
 
-/* 火焰背景容器 */
 .fire-background {
   position: absolute;
   inset: 0;
@@ -267,99 +266,72 @@ button:active {
   opacity: 0.85;
 }
 
-/* 火焰形状 */
-.flame {
+/* 页面底部中央的一束火焰 */
+.single-flame {
   position: absolute;
-  bottom: -80px;
+  left: 50%;
+  bottom: -30px;
   display: block;
-  width: 100px;
-  height: 260px;
+  width: 180px;
+  height: 380px;
   background: linear-gradient(
     to top,
     #000 0%,
-    #080808 35%,
-    #242424 70%,
+    #111 45%,
+    #292929 75%,
     transparent 100%
   );
   clip-path: polygon(
     50% 0%,
     65% 25%,
     58% 42%,
-    85% 25%,
-    78% 55%,
+    80% 30%,
+    72% 60%,
     100% 42%,
-    88% 78%,
-    70% 100%,
-    25% 100%,
-    10% 75%,
+    85% 78%,
+    65% 100%,
+    30% 100%,
+    12% 75%,
     0% 55%,
-    25% 65%,
-    20% 35%,
-    42% 50%
+    30% 65%,
+    25% 35%,
+    45% 50%
   );
+  transform: translateX(-50%);
   transform-origin: bottom center;
-  animation: black-fire 2.5s ease-in-out infinite alternate;
+  animation: single-black-fire 1.8s ease-in-out infinite alternate;
 }
 
-.flame-one {
-  left: 3%;
-  height: 240px;
-  animation-delay: 0s;
-}
-
-.flame-two {
-  left: 20%;
-  height: 320px;
-  width: 130px;
-  animation-delay: .6s;
-}
-
-.flame-three {
-  left: 40%;
-  height: 220px;
-  animation-delay: 1s;
-}
-
-.flame-four {
-  left: 58%;
-  height: 300px;
-  width: 120px;
-  animation-delay: .3s;
-}
-
-.flame-five {
-  left: 77%;
-  height: 250px;
-  animation-delay: .9s;
-}
-
-.flame-six {
-  right: 1%;
-  height: 330px;
-  width: 140px;
-  animation-delay: 1.3s;
-}
-
-/* 火焰燃烧动画 */
-@keyframes black-fire {
+@keyframes single-black-fire {
   0% {
-    transform: scaleY(.75) scaleX(.9) rotate(-5deg);
-    opacity: .55;
+    transform: translateX(-50%) scaleY(0.85) scaleX(0.9) rotate(-3deg);
+    opacity: 0.65;
   }
-
-  50% {
-    opacity: .9;
-  }
-
   100% {
-    transform: scaleY(1.2) scaleX(1.08) rotate(5deg);
-    opacity: .7;
+    transform: translateX(-50%) scaleY(1.15) scaleX(1.08) rotate(3deg);
+    opacity: 1;
   }
 }
 
 /* 尊重系统的减少动态效果设置 */
 @media (prefers-reduced-motion: reduce) {
-  .flame {
+  .single-flame {
     animation: none;
   }
+}
+
+/* 联系官方站长按钮 */
+nav button.contact-official {
+  background: #e53935;
+  color: #000;
+  border: 1px solid #e53935;
+  border-radius: 4px;
+  padding: 9px 13px;
+  font-weight: 700;
+}
+
+nav button.contact-official:hover {
+  background: #c62828;
+  border-color: #c62828;
+  color: #000;
 }
