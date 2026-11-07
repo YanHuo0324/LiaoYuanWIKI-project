@@ -249,7 +249,6 @@ button:hover {
 button:active {
   transform: scale(0.97);
 }
-/* 关于页面单束黑色火焰背景 */
 .about {
   position: relative;
   isolation: isolate;
@@ -257,70 +256,7 @@ button:active {
   min-height: 75vh;
 }
 
-.fire-background {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  overflow: hidden;
-  pointer-events: none;
-  opacity: 0.85;
-}
-
-/* 页面底部中央的一束火焰 */
-.single-flame {
-  position: absolute;
-  left: 50%;
-  bottom: -30px;
-  display: block;
-  width: 180px;
-  height: 380px;
-  background: linear-gradient(
-    to top,
-    #000 0%,
-    #111 45%,
-    #292929 75%,
-    transparent 100%
-  );
-  clip-path: polygon(
-    50% 0%,
-    65% 25%,
-    58% 42%,
-    80% 30%,
-    72% 60%,
-    100% 42%,
-    85% 78%,
-    65% 100%,
-    30% 100%,
-    12% 75%,
-    0% 55%,
-    30% 65%,
-    25% 35%,
-    45% 50%
-  );
-  transform: translateX(-50%);
-  transform-origin: bottom center;
-  animation: single-black-fire 1.8s ease-in-out infinite alternate;
-}
-
-@keyframes single-black-fire {
-  0% {
-    transform: translateX(-50%) scaleY(0.85) scaleX(0.9) rotate(-3deg);
-    opacity: 0.65;
-  }
-  100% {
-    transform: translateX(-50%) scaleY(1.15) scaleX(1.08) rotate(3deg);
-    opacity: 1;
-  }
-}
-
-/* 尊重系统的减少动态效果设置 */
-@media (prefers-reduced-motion: reduce) {
-  .single-flame {
-    animation: none;
-  }
-}
-
-/* 联系官方站长按钮 */
+  /* 联系官方站长按钮 */
 nav button.contact-official {
   background: #e53935;
   color: #000;
@@ -334,4 +270,55 @@ nav button.contact-official:hover {
   background: #c62828;
   border-color: #c62828;
   color: #000;
+}
+
+/* 赞助白起颜色 */
+.about-credits p {
+  margin: 8px 0;
+}
+
+.about-credits .sponsor-credit {
+  color: red;
+}
+/* 赵雅婷动态红色警示效果 */
+/* 站长安全提醒警告框 */
+.article-content .warning-name {
+  color: #ff0000;
+  font-weight: 900;
+  text-shadow: 0 0 5px #ff0000;
+  animation: warning-name-flash 0.8s infinite alternate;
+}
+
+/* 姓名红色闪烁 */
+@keyframes warning-name-flash {
+  from {
+    color: #ff0000;
+    text-shadow: 0 0 3px #ff0000;
+  }
+  to {
+    color: #ff7777;
+    text-shadow: 0 0 10px #ff0000, 0 0 18px #ff3333;
+  }
+}
+
+/* 安全提醒整体效果 */
+.article-content:has(.warning-name) {
+  padding: 18px;
+  margin-top: 24px;
+  border: 2px solid #ff3333;
+  border-radius: 10px;
+  background: rgba(255, 0, 0, 0.07);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+  animation: warning-box-glow 1.2s infinite alternate;
+}
+
+@keyframes warning-box-glow {
+  from {
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    border-color: #ff6666;
+  }
+  to {
+    box-shadow: 0 0 18px rgba(255, 0, 0, 0.65);
+    border-color: #ff0000;
+  }
 }

@@ -110,15 +110,6 @@ function App() {
   const [notice, setNotice] = useState("");
   const [loading, setLoading] = useState(false);
 
-  function contactOfficial() {
-    const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
-    const targetUrl = isMobile
-      ? "mqq://card/show_pslcard?src_type=internal&version=1&uin=3079539881&card_type=person&source=sharecard"
-      : "tencent://AddContact/?fromId=45&fromSubId=1&subcmd=all&uin=3079539881&website=qq";
-
-    window.location.href = targetUrl;
-  }
-
   async function loadPosts() {
     if (!supabase) return;
     const { data, error } = await supabase.from("posts").select("*").eq("published", true).order("created_at", { ascending: false });
@@ -199,7 +190,6 @@ function App() {
   <button onClick={() => setMode("submissions")}>废物投稿</button>
   <button onClick={() => setMode("events")}>事件记录</button>
   <button onClick={() => setMode("about")}>关于</button>
-  <button className="contact-official" onClick={contactOfficial}>联系官方【站长】</button>
   {isAdmin && (
   <button className="login-link" onClick={logout}>
     <LogOut size={15} /> 退出登录
@@ -216,7 +206,7 @@ function App() {
       <section className="hero">
         <div className="hero-layout">
           <div className="hero-text">
-            <p className="eyebrow">成员变更 | 废物投稿 | 事件记录</p>
+            <p className="eyebrow">About LiaoYuan</p>
             <h1>燎原维基百科<br/><em>2026新起点</em></h1>
             <p className="hero-copy">认准正统燎原，反对所有假燎原/借刀废物，如果遇到假燎原，请立即找到官方举报</p>
             <a href="#articles" className="text-link">阅读最新文章 <ArrowUpRight size={16}/></a>
@@ -316,10 +306,26 @@ function App() {
   </main>
 )}
     {selected && <main className="reader"><button className="back" onClick={() => setSelected(null)}><ChevronLeft size={17}/> 返回文章列表</button>{selected.cover_url && <img className="reader-cover" src={selected.cover_url} alt=""/>}<p className="eyebrow">{selected.category} · {new Date(selected.created_at).toLocaleDateString("zh-CN")}</p><h1>{selected.title}</h1><p className="reader-excerpt">{selected.excerpt}</p><div className="article-content">{selected.content}</div></main>}
-    {mode === "about" && <main className="reader about"><div className="fire-background" aria-hidden="true">
-  <span className="flame single-flame"></span>
-</div><p className="eyebrow">ABOUT LiaoYuan</p><h1>这里是燎原维基百科站点</h1><p className="reader-excerpt">创始人：逸林 风绝</p><div className="article-content">本站点建设技术支持：Lunar</div></main>}
-    {mode === "login" && <main className="auth-card"><p className="eyebrow">PRIVATE AREA</p><h2>管理员登录</h2><p>登录后可以创建、编辑和删除文章。</p><form onSubmit={login}><label>邮箱<input type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label><label>password<input type="password" required value={password} onChange={e => setPassword(e.target.value)}/></label><button className="primary" disabled={loading}>{loading ? "登录中…" : "登录后台"}</button></form></main>}
+    {mode === "about" && (
+  <main className="reader about">
+    <p className="eyebrow">ABOUT liaoyuan.online</p>
+    <h1>这里是燎原维基百科站点</h1>
+
+    <div className="article-content about-credits">
+      <p>燎原创始人：逸林 风绝</p>
+      <p>本站点建设：Lunar</p>
+      <p>站点文章管理：赐名 灰二 白起</p>
+      <p className="sponsor-credit">本站点建设成本赞助：白起</p>
+    </div>
+
+    <div className="article-content">
+  ⚠️ 站长安全提醒：燎原用户请注意不要接触
+  <span className="warning-name">赵雅婷</span>
+  ，此人是个重度精神病，劝告在此，一旦接触，后果自负！！！
+</div>
+  </main>
+)}
+    {mode === "login" && <main className="auth-card"><p className="eyebrow">PRIVATE AREA</p><h2>管理员登录</h2><p>登录后可以创建、编辑和删除文章。</p><form onSubmit={login}><label>邮箱<input type="email" required value={email} onChange={e => setEmail(e.target.value)}/></label><label>password<input type="password" required value={密码} onChange={e => setPassword(e.target.value)}/></label><button className="primary" disabled={loading}>{loading ? "登录中…" : "登录后台"}</button></form></main>}
     {mode === "manage" && isAdmin && <main className="manager"><div className="section-heading"><div><p className="eyebrow">DASHBOARD</p><h2>文章管理</h2></div><button className="primary small" onClick={() => { setEditingId(null); setDraft({ title: "", excerpt: "", content: "", category: "成员变更", cover_url: "" }); setMode("editor"); }}><Plus size={16}/> 编辑新文章</button></div>{posts.map(p => <div className="manage-row" key={p.id}><div><b>{p.title}</b><small>{p.category} · {new Date(p.created_at).toLocaleDateString("zh-CN")}</small></div><div><button onClick={() => editPost(p)}>编辑</button><button className="danger" onClick={() => deletePost(p.id)}>删除</button></div></div>)}</main>}
     {mode === "editor" && isAdmin && <main className="editor"><button className="back" onClick={() => setMode("manage")}><ChevronLeft size={17}/> 返回管理</button><p className="eyebrow">EDITOR</p><h2>{editingId ? "编辑文章" : "发布一篇新文章"}</h2><form onSubmit={savePost}><label>文章标题<input required value={draft.title} onChange={e => setDraft({...draft, title:e.target.value})}/></label><label>摘要<input value={draft.excerpt} onChange={e => setDraft({...draft, excerpt:e.target.value})}/></label><label>
   文章分类
@@ -337,7 +343,7 @@ function App() {
 }
 
 function Setup() {
-  return <div className="setup"><div className="setup-card"><div className="brand-mark">写</div><p className="eyebrow">YOUR PERSONAL SPACE</p><h1>博客项目已准备好。</h1><p>接下来需要连接 Supabase 数据库，填入项目 URL 和公开 anon key，再运行项目。</p><ol><li>复制 <code>.env.example</code> 为 <code>.env</code></li><li>填入 Supabase 项目 URL 与 anon key</li><li>在 Supabase SQL Editor 执行 <code>supabase/schema.sql</code></li><li>创建管理员用户，并按 README 将用户 ID 加入 admin_users</li></ol><p className="muted">安全提示：不要把 service_role key 放进前端环境变量。</p></div></div>;
+  return <div className="setup"><div className="setup-card"><div className="brand-mark">写</div><p className="eyebrow">YOUR PERSONAL SPACE</p><h1>项目已准备好。</h1><p>接下来需要连接 Supabase 数据库，填入项目 URL 和公开 anon key，再运行项目。</p><ol><li>复制 <code>.env.example</code> 为 <code>.env</code></li><li>填入 Supabase 项目 URL 与 anon key</li><li>在 Supabase SQL Editor 执行 <code>supabase/schema.sql</code></li><li>创建管理员用户，并按 README 将用户 ID 加入 admin_users</li></ol><p className="muted">安全提示：不要把 service_role key 放进前端环境变量。</p></div></div>;
 }
 function Root() {
   const [showIntro, setShowIntro] = useState(true);
